@@ -1,14 +1,22 @@
 import { connect } from 'react-redux';
-import { moveCreature } from '../../redux/creatures';
+import {
+	addCreatureGroup,
+	clearCreatureGroups,
+	moveCreatureGroup,
+	removeCreatureGroup
+} from '../../redux/creatures';
 import Track from './Track';
 
 const mapStateToProps = ({ creatures }) => creatures;
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onDragEnd: ({ source, destination }) => {
+		addHandler: () => dispatch(addCreatureGroup()),
+		clearHandler: () => dispatch(clearCreatureGroups()),
+		deleteHandler: (index) => dispatch(removeCreatureGroup(index)),
+		dropHandler: ({ source, destination }) => {
 			if (source && destination) {
-				dispatch(moveCreature(source.index, destination.index))
+				dispatch(moveCreatureGroup(source.index, destination.index))
 			}
 		}
 	}

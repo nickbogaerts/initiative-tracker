@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import Creature from '../creature/Creature';
+import CreatureGroup from '../creatureGroup/CreatureGroup';
+import MenuBar from '../menuBar/MenuBar';
 import StyledTrack from './Track.styles';
 import bindMethods from 'yaab';
 
@@ -14,10 +15,18 @@ class Track extends Component {
 	}
 
 	render() {
-		const { onDragEnd, creatures } = this.props;
+		const { addHandler, clearHandler, deleteHandler, dropHandler, creatures } = this.props;
 		return (
 			<StyledTrack>
-				<DragDropContext onDragEnd={ onDragEnd }>
+				<MenuBar
+					onAddMonster={ addHandler }
+					onRollInit={ () => { console.log('roll init'); } }
+					onClear={ clearHandler }
+					onLoad={ () => { console.log('load'); } }
+					onSave={ () => { console.log('save'); } }
+					onManagePlayers={ () => { console.log('manage players'); } }
+				/>
+				<DragDropContext onDragEnd={ dropHandler }>
 					<Droppable droppableId="droppable">
 						{(provided, snapshot) => (
 							<div ref={provided.innerRef}>
@@ -29,7 +38,10 @@ class Track extends Component {
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
 											>
-											<Creature {...creature} />
+											<CreatureGroup
+												onDelete={() => deleteHandler(index) }
+												onChangeInitiative={() => { console.log('init'); } }
+												{...creature} />
 										</div>
 										)}
 									</Draggable>
@@ -45,7 +57,10 @@ class Track extends Component {
 }
 
 Track.propTypes = {
-	onDragEnd: PropTypes.func.isRequired,
+	addHandler: PropTypes.func.isRequired,
+	clearHandler: PropTypes.func.isRequired,
+	deleteHandler: PropTypes.func.isRequired,
+	dropHandler: PropTypes.func.isRequired,
 	creatures: PropTypes.arrayOf(PropTypes.shape({
 			id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 			name: PropTypes.string,
