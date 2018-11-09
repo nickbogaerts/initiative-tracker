@@ -15,7 +15,7 @@ class Track extends Component {
 	}
 
 	render() {
-		const { addHandler, clearHandler, deleteHandler, dropHandler, creatures } = this.props;
+		const { addHandler, clearHandler, deleteHandler, dropHandler, setInitHandler, creatures } = this.props;
 		return (
 			<StyledTrack>
 				<MenuBar
@@ -40,7 +40,7 @@ class Track extends Component {
 											>
 											<CreatureGroup
 												onDelete={() => deleteHandler(index) }
-												onChangeInitiative={() => { console.log('init'); } }
+												onChangeInitiative={(e) => setInitHandler(index, parseInt(e.target.value, 10)) }
 												{...creature} />
 										</div>
 										)}
@@ -61,6 +61,7 @@ Track.propTypes = {
 	clearHandler: PropTypes.func.isRequired,
 	deleteHandler: PropTypes.func.isRequired,
 	dropHandler: PropTypes.func.isRequired,
+	setInitHandler: PropTypes.func.isRequired,
 	creatures: PropTypes.arrayOf(PropTypes.shape({
 			id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 			name: PropTypes.string,

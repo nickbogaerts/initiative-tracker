@@ -4,6 +4,7 @@ export const ADD = 'ADD';
 export const CLEAR = 'CLEAR';
 export const MOVE = 'MOVE';
 export const REMOVE = 'REMOVE';
+export const SET_INIT = 'SET_INIT';
 
 export function addCreatureGroup() {
 	return {
@@ -33,6 +34,13 @@ export function removeCreatureGroup(oldPosition, newPosition) {
 	}
 }
 
+export function setCreatureGroupInit(index, initiative) {
+	return {
+		type: SET_INIT,
+		value: { index, initiative }
+	}
+}
+
 const initialState = {
 	creatures: []
 }
@@ -46,7 +54,7 @@ function creatures(state = initialState, action) {
 				id: uuidv1(),
 				name: 'New Creature',
 				type: 'Obj',
-				initiative: 0
+				initiative: 0,
 			});
 			return Object.assign({}, state, { creatures });
 
@@ -62,6 +70,12 @@ function creatures(state = initialState, action) {
 			if (action.type === MOVE) {
 				creatures.splice(newPosition, 0, creature);
 			}
+			return Object.assign({}, state, { creatures });
+			
+		case SET_INIT:
+			const { index, initiative } = action.value;
+			creatures =  Array.from(state.creatures);
+			creatures[index].initiative = initiative;
 			return Object.assign({}, state, { creatures });
 
 		default:

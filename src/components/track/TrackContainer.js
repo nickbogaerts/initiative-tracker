@@ -3,7 +3,8 @@ import {
 	addCreatureGroup,
 	clearCreatureGroups,
 	moveCreatureGroup,
-	removeCreatureGroup
+	removeCreatureGroup,
+	setCreatureGroupInit
 } from '../../redux/creatures';
 import Track from './Track';
 
@@ -18,7 +19,8 @@ const mapDispatchToProps = dispatch => {
 			if (source && destination) {
 				dispatch(moveCreatureGroup(source.index, destination.index))
 			}
-		}
+		},
+		setInitHandler: (index, initiative) => dispatch(setCreatureGroupInit(index, initiative)),
 	}
 }
 
